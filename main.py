@@ -1,4 +1,5 @@
 from src.data_fetcher import fetch_stock_data
+from src.data_cleaner import clean_stock_data
 
 def main():
 
@@ -6,27 +7,23 @@ def main():
     print(" STOCK MARKET DATA ANALYZER ")
     print("=" * 50)
 
-    # User input
-    ticker = input("Enter Stock Ticker Symbol (Example: AAPL): ")
+    ticker = input("Enter Stock Ticker Symbol: ")
 
-    # Date range
     start_date = "2020-01-01"
     end_date = "2024-01-01"
 
-    # Fetch stock data
-    data = fetch_stock_data(
-        ticker,
-        start_date,
-        end_date
-    )
+    # Fetch data
+    raw_data = fetch_stock_data(ticker, start_date, end_date)
 
-    # Display preview
-    if data is not None:
-        print("\nFirst 5 Rows:\n")
-        print(data.head())
+    if raw_data is not None:
 
-        print("\nDataset Information:\n")
-        print(data.info())
+        file_path = f"data/{ticker}.csv"
+
+        # Clean data
+        clean_data = clean_stock_data(file_path)
+
+        print("\nCleaned Data Preview:\n")
+        print(clean_data.head())
 
 if __name__ == "__main__":
     main()
