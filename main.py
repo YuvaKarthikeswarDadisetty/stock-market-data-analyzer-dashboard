@@ -1,0 +1,1 @@
+print("Stock Market Data Analyzer Setup Complete 🚀")
