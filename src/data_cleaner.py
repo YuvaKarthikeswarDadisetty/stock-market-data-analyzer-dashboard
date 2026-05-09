@@ -1,55 +1,56 @@
 import pandas as pd
 
 def clean_stock_data(file_path):
-    """
-    Load and clean stock data
-    """
-
     print("\nLoading data...")
 
-    # Load CSV
+    # Load CSV WITHOUT parsing issues
     df = pd.read_csv(file_path)
 
     print("\nInitial Data Shape:", df.shape)
 
     # ----------------------------
-    # Convert Date column
+    # REMOVE BAD HEADER ROWS
     # ----------------------------
-    if 'Date' in df.columns:
-        df['Date'] = pd.to_datetime(df['Date'])
-        df.set_index('Date', inplace=True)
+    # Drop rows where Close is not numeric
+    df = df[pd.to_numeric(df.iloc[:, 1], errors='coerce').notnull()]
 
     # ----------------------------
-    # Remove duplicates
+    # RESET COLUMN NAMES
+    # ----------------------------
+    df.columns = ['Date', 'Close', 'High', 'Low', 'Open', 'Volume']
+
+    # ----------------------------
+    # CONVERT DATE
+    # ----------------------------
+    df['Date'] = pd.to_datetime(df['Date'], errors='coerce')
+    df.dropna(subset=['Date'], inplace=True)
+    df.set_index('Date', inplace=True)
+
+    # ----------------------------
+    # REMOVE DUPLICATES
     # ----------------------------
     duplicates = df.duplicated().sum()
     print(f"\nDuplicate rows found: {duplicates}")
     df.drop_duplicates(inplace=True)
 
     # ----------------------------
-    # Handle missing values
+    # HANDLE MISSING VALUES
     # ----------------------------
-    missing_values = df.isnull().sum()
-    print("\nMissing values:\n", missing_values)
+    print("\nMissing values:\n", df.isnull().sum())
 
-    # Fill missing values using forward fill
-    df.fillna(method='ffill', inplace=True)
-
-    # Drop remaining NaNs (if any)
+    df = df.ffill()
     df.dropna(inplace=True)
 
     # ----------------------------
-    # Ensure numeric types
+    # ENSURE NUMERIC TYPES
     # ----------------------------
-    numeric_cols = ['Open', 'High', 'Low', 'Close', 'Adj Close', 'Volume']
+    numeric_cols = ['Close', 'High', 'Low', 'Open', 'Volume']
 
     for col in numeric_cols:
-        if col in df.columns:
-            df[col] = pd.to_numeric(df[col], errors='coerce')
+        df[col] = pd.to_numeric(df[col], errors='coerce')
 
-    # ----------------------------
-    # Final check
-    # ----------------------------
+    df.dropna(inplace=True)
+
     print("\nCleaned Data Shape:", df.shape)
     print("\nData Types:\n", df.dtypes)
 

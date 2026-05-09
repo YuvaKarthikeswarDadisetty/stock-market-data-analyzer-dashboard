@@ -1,5 +1,6 @@
 from src.data_fetcher import fetch_stock_data
 from src.data_cleaner import clean_stock_data
+from src.eda import run_eda
 
 def main():
 
@@ -22,8 +23,8 @@ def main():
         # Clean data
         clean_data = clean_stock_data(file_path)
 
-        print("\nCleaned Data Preview:\n")
-        print(clean_data.head())
+        # Run EDA
+        run_eda(clean_data, ticker)
 
 if __name__ == "__main__":
     main()
