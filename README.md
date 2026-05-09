@@ -144,7 +144,7 @@ Stock-Market-Data-Analyzer/
 ### 1️⃣ Clone Repository
 
 ```bash
-git clone https://github.com/your-username/Stock-Market-Data-Analyzer.git
+git clone https://github.com/YuvaKarthikeswarDadisetty/stock-market-data-analyzer-dashboard/tree/main
 cd Stock-Market-Data-Analyzer
 ```
 
