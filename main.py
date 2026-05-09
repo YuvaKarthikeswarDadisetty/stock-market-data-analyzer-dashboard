@@ -2,7 +2,7 @@ from src.data_fetcher import fetch_stock_data
 from src.data_cleaner import clean_stock_data
 from src.eda import run_eda
 from src.trend_analysis import run_trend_analysis
-
+from src.returns_analysis import run_returns_analysis
 def main():
 
     print("=" * 50)
@@ -27,6 +27,13 @@ def main():
 
         # Trend Analysis
         clean_data, trend = run_trend_analysis(clean_data, ticker)
+
+        # After trend analysis
+
+        clean_data, trend = run_trend_analysis(clean_data, ticker)
+
+        # Returns & Volatility
+        clean_data = run_returns_analysis(clean_data, ticker)
 
 if __name__ == "__main__":
     main()
