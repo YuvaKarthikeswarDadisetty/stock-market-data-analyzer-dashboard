@@ -3,6 +3,7 @@ from src.data_cleaner import clean_stock_data
 from src.eda import run_eda
 from src.trend_analysis import run_trend_analysis
 from src.returns_analysis import run_returns_analysis
+from src.report_generator import generate_report
 def main():
 
     print("=" * 50)
@@ -34,6 +35,13 @@ def main():
 
         # Returns & Volatility
         clean_data = run_returns_analysis(clean_data, ticker)
+
+        # After Phase 6
+
+        clean_data = run_returns_analysis(clean_data, ticker)
+
+        # Generate report
+        generate_report(clean_data, ticker, trend)
 
 if __name__ == "__main__":
     main()
